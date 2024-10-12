@@ -48,7 +48,7 @@ class Rental:
             )
         return result
 
-    def rental_points(self):
+    def get_rental_points(self):
         if self.get_movie().get_price_code() == Movie.NEW_RELEASE:
             # New release earns 1 point per day rented
             return self.get_days_rented()
