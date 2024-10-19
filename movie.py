@@ -1,15 +1,7 @@
-from price_strategy import NEW_RELEASE, REGULAR, CHILDRENS
-
-
 class Movie:
     """
     A movie available for rent.
     """
-
-    # The types of movies (price_code).
-    REGULAR = REGULAR
-    NEW_RELEASE = NEW_RELEASE
-    CHILDRENS = CHILDRENS
 
     def __init__(self, title, price_code):
         # Initialize a new movie.
