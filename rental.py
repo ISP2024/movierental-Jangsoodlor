@@ -17,6 +17,10 @@ class Rental:
         self.days_rented = days_rented
         self.price_code = price_code
 
+    def get_price_code(self):
+        # get the price code
+        return self.price_code
+
     def get_movie(self):
         return self.movie
 

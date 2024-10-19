@@ -18,3 +18,6 @@ Before and after each refactoring you should **run the unit tests**.
 
 See [Resources](https://cpske.github.io/ISP/assignment/movierental/movierental-part1#resources) in the assignment description.
 
+## Rationale
+2.1 The code smell that suggest moving `get_price_code` from Movie to Rental is "Feature Envy". Since the price code is moved to Rental, the `get_price_code` method in Movie needs to access the data from Rental.
+2.2 The design principle that suggest this refractoring is "Information Expert". Which is to put a method in a class that has the most information needed to perform that method.
