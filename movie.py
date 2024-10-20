@@ -15,13 +15,13 @@ class MovieCatalog:
         """Initialize a new movie catalog."""
         self.catalog = []
         self.logger = logging.getLogger(__name__)
-        self.movie_gen_iter = iter(self.movie_generator())
+        self.movie_gen_iter = iter(self.__movie_generator())
 
-    def movie_generator(self):
+    def __movie_generator(self):
         for line_num, row in enumerate(open("movies.csv", "r")):
             yield line_num + 1, row.strip()
 
-    def create_movie(self, line_num, row):
+    def __create_movie(self, line_num, row):
         """Create a single movie from a row in movies.csv."""
         movie_info = row.split(",")
         try:
@@ -36,7 +36,7 @@ class MovieCatalog:
             self.logger.error(f'Line {line_num}: Unrecognized format "{row}"')
             return None
 
-    def is_valid_movie(self, movie, title: str, year: Optional[int]):
+    def __is_valid_movie(self, movie, title: str, year: Optional[int]):
         """Return True if the movie has the same title and year as the parameters."""
         if movie is not None:
             if not year:
@@ -53,8 +53,8 @@ class MovieCatalog:
             try:
                 while True:
                     row = next(self.movie_gen_iter)
-                    movie = self.create_movie(row[0], row[1])
-                    if self.is_valid_movie(movie, title, year):
+                    movie = self.__create_movie(row[0], row[1])
+                    if self.__is_valid_movie(movie, title, year):
                         return movie
             except StopIteration:
                 return None
