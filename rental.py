@@ -9,13 +9,13 @@ class Rental:
     For simplicity of this application only days_rented is recorded.
     """
 
-    def __init__(self, movie, days_rented, price_code):
+    def __init__(self, movie, days_rented):
         """Initialize a new movie rental object for
         a movie with known rental period (daysRented).
         """
         self.movie = movie
         self.days_rented = days_rented
-        self.price_code = price_code
+        self.price_code = self.movie.get_price_for_movie()
 
     def get_price_code(self):
         # get the price code
