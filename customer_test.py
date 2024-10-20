@@ -1,9 +1,9 @@
 import re
 import unittest
 from customer import Customer
+from datetime import datetime
 from rental import Rental
 from movie import Movie
-from pricing import NEW_RELEASE, REGULAR, CHILDRENS
 
 
 class CustomerTest(unittest.TestCase):
@@ -16,14 +16,19 @@ class CustomerTest(unittest.TestCase):
         movies = list of some movies
         """
         self.c = Customer("Movie Mogul")
-        self.new_movie = Movie("Mulan", NEW_RELEASE)
-        self.regular_movie = Movie("CitizenFour", REGULAR)
-        self.childrens_movie = Movie("Frozen", CHILDRENS)
+        self.new_movie = Movie(
+            "Dune: Part Two", datetime.now().year, ["Sci-fi", "Action"]
+        )
+        self.regular_movie = Movie("Johnny English", 2003, ["Action", "Comedy"])
+        self.childrens_movie = Movie("Frozen", 2013, ["Children", "Fairy Tale"])
 
-    @unittest.skip("No convenient way to test")
-    def test_billing():
-        # no convenient way to test billing since its buried in the statement() method.
-        pass
+    def test_billing(self):
+        self.c.add_rental(Rental(self.new_movie, 5))
+        self.assertEqual(self.c.get_total_charge(), 15)
+        self.c.add_rental(Rental(self.childrens_movie, 5))
+        self.assertEqual(self.c.get_total_charge(), 15+4.5)
+        self.c.add_rental(Rental(self.regular_movie, 5))
+        self.assertEqual(self.c.get_total_charge(), 15+4.5+6.5)
 
     def test_statement(self):
         stmt = self.c.statement()
