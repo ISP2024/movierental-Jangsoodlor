@@ -2,6 +2,8 @@ import logging
 from collections.abc import Collection
 from typing import Optional
 from dataclasses import dataclass
+from datetime import datetime
+from pricing import NEW_RELEASE, CHILDRENS, REGULAR
 
 
 class MovieCatalog:
@@ -17,7 +19,7 @@ class MovieCatalog:
 
     def movie_generator(self):
         for line_num, row in enumerate(open("movies.csv", "r")):
-            yield line_num+1, row.strip()
+            yield line_num + 1, row.strip()
 
     def create_movie(self, line_num, row):
         """Create a single movie from a row in movies.csv."""
@@ -31,7 +33,7 @@ class MovieCatalog:
                 self.catalog.append(movie)
                 return movie
         except (IndexError, ValueError):
-            self.logger.error(f"Line {line_num}: Unrecognized format \"{row}\"")
+            self.logger.error(f'Line {line_num}: Unrecognized format "{row}"')
             return None
 
     def is_valid_movie(self, movie, title: str, year: Optional[int]):
@@ -77,7 +79,21 @@ class Movie:
         return self.title
 
     def is_genre(self, genre: str):
-        return genre.lower() == self.genre.lower()
+        """Return whether the movie is in the specified genre or not."""
+        return genre.lower() in [g.lower() for g in self.genre]
+
+    def get_price_for_movie(self):
+        """Get the price code of this movie."""
+        return Movie.price_code_for_movie(self)
 
     def __str__(self) -> str:
         return f"{self.title} {self.year}"
+
+    @classmethod
+    def price_code_for_movie(cls, movie):
+        """A class method to determine the price strategy of a movie."""
+        if movie.is_genre("Children") or movie.is_genre("Childrens"):
+            return CHILDRENS
+        if movie.year == datetime.now().year:
+            return NEW_RELEASE
+        return REGULAR
