@@ -5,6 +5,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from pricing import NEW_RELEASE, CHILDRENS, REGULAR
 
+# Movies data in CSV format
+MOVIES_FILE = "movies.csv"
+
 
 class MovieCatalog:
     """A catalog of available movies."""
@@ -18,8 +21,17 @@ class MovieCatalog:
         self.movie_gen_iter = iter(self.__movie_generator())
 
     def __movie_generator(self):
-        for line_num, row in enumerate(open("movies.csv", "r")):
+
+        # it is a good idea to specify file encoding to avoid errors
+        file = open(MOVIES_FILE, "r", encoding='UTF-8')
+        for line_num, row in enumerate(file):
             yield line_num + 1, row.strip()
+        # close the file when done
+        try:
+            file.close()
+        except IOError:
+            # can't do anything about it
+            pass
 
     def __create_movie(self, line_num, row):
         """Create a single movie from a row in movies.csv."""
